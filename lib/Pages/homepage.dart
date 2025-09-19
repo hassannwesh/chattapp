@@ -11,9 +11,9 @@ class Homepage extends StatelessWidget {
   //chat & auth service
   final ChatService _chatService = ChatService();
   final AuthService _authService = AuthService();
-  void logout(){
+  void logout() {
     // get auth service
-    final auth=AuthService();
+    final auth = AuthService();
     auth.signOut();
   }
 
@@ -21,7 +21,6 @@ class Homepage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
         //foregroundColor: Colors.grey,
         elevation: 0,
         foregroundColor: Colors.grey,
@@ -29,7 +28,9 @@ class Homepage extends StatelessWidget {
         title: const Text(
           " USERS ",
         ),
-        actions: [ IconButton(onPressed: logout, icon: const Icon(Icons.logout))],
+        actions: [
+          IconButton(onPressed: logout, icon: const Icon(Icons.logout))
+        ],
       ),
       drawer: const MyDrawer(),
       body: _buildUserList(),
@@ -62,31 +63,26 @@ class Homepage extends StatelessWidget {
 
   //build individual list tile for user
   Widget _buildUserListItem(
-      Map<String, dynamic> userData,
-      BuildContext context) {
+      Map<String, dynamic> userData, BuildContext context) {
     //display all users excepl current user
     if (userData["email"] != _authService.getCurrentUser()!.email) {
       return UserTile(
-        // هنا اسم المستخدم
+          // هنا اسم المستخدم
           text: userData["email"],
-          onTap: (){
-        //tapped ona user -> go to cgat page
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>
-                ChatPage(
+          onTap: () {
+            //tapped ona user -> go to cgat page
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ChatPage(
                   receiverEmail: userData["email"],
-                  receiverID:userData["uid"],
+                  receiverID: userData["uid"],
                 ),
-          ),
-        );
-      });
-  }else{
+              ),
+            );
+          });
+    } else {
       return Container();
     }
   }
-
-
-
 }

@@ -1,4 +1,5 @@
 import 'package:chattappv1/themes/theme_provider.dart';
+import 'package:chattappv1/services/auth/auth/auth_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -6,7 +7,9 @@ import 'package:provider/provider.dart';
 import 'BlockUserPage.dart';
 
 class SettingPage extends StatelessWidget {
-  const SettingPage({super.key});
+  SettingPage({super.key});
+
+  final AuthService _authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -30,14 +33,17 @@ class SettingPage extends StatelessWidget {
               color: Theme.of(context).colorScheme.secondary,
               borderRadius: BorderRadius.circular(15),
             ),
-            margin: const EdgeInsets.only(left: 25,right: 25,top:25,bottom: 20),
-
+            margin:
+                const EdgeInsets.only(left: 25, right: 25, top: 25, bottom: 20),
             padding: const EdgeInsets.all(16),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 // Dark Mode
-                const Text("Dark Mode",style: TextStyle(fontSize: 20),),
+                const Text(
+                  "Dark Mode",
+                  style: TextStyle(fontSize: 20),
+                ),
                 // Switch toggle
                 Consumer<ThemeProvider>(
                   builder: (context, themeProvider, child) => CupertinoSwitch(
@@ -55,21 +61,62 @@ class SettingPage extends StatelessWidget {
               color: Theme.of(context).colorScheme.secondary,
               borderRadius: BorderRadius.circular(15),
             ),
-            margin: const EdgeInsets.only(left: 25,right: 25,top: 5,bottom: 5),
+            margin:
+                const EdgeInsets.only(left: 25, right: 25, top: 5, bottom: 5),
             padding: const EdgeInsets.all(16),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 // Blocked Users
-                const Text("Blocked Users",style: TextStyle(fontSize: 20),),
+                const Text(
+                  "Blocked Users",
+                  style: TextStyle(fontSize: 20),
+                ),
                 // button to go blocked user page
                 IconButton(
-                    onPressed: ()=>Navigator.push(context,MaterialPageRoute(builder: (context)=> BlockUserPage())),
-                    icon:  Icon(
-                      Icons.arrow_forward_rounded,
-                      color: Theme.of(context).colorScheme.primary,
-                      size: 30,
-                    ),
+                  onPressed: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => BlockUserPage())),
+                  icon: Icon(
+                    Icons.arrow_forward_rounded,
+                    color: Theme.of(context).colorScheme.primary,
+                    size: 30,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // cleanup users button
+          Container(
+            height: 70,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.secondary,
+              borderRadius: BorderRadius.circular(15),
+            ),
+            margin:
+                const EdgeInsets.only(left: 25, right: 25, top: 5, bottom: 5),
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Cleanup Users
+                const Text(
+                  "Cleanup Users",
+                  style: TextStyle(fontSize: 20),
+                ),
+                // button to cleanup users
+                IconButton(
+                  onPressed: () async {
+                    await _authService.cleanupDuplicateUsers();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                          content: Text('Users cleaned up successfully')),
+                    );
+                  },
+                  icon: Icon(
+                    Icons.cleaning_services,
+                    color: Theme.of(context).colorScheme.primary,
+                    size: 30,
+                  ),
                 ),
               ],
             ),

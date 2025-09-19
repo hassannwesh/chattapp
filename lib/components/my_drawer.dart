@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
-  void logout(){
+  void logout() {
     // get auth service
-    final auth=AuthService();
+    final auth = AuthService();
     auth.signOut();
   }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -57,7 +58,7 @@ class MyDrawer extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const SettingPage(),
+                          builder: (context) => SettingPage(),
                         ),
                       );
                     },
